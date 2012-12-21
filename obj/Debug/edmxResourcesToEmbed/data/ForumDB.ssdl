@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ForumDBModel.Store" Alias="Self" Provider="System.Data.SqlServerCe.4.0" ProviderManifestToken="4.0" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="ForumDBModelStoreContainer">
+    <EntitySet Name="Comment" EntityType="ForumDBModel.Store.Comment" store:Type="Tables" />
+    <EntitySet Name="PostThread" EntityType="ForumDBModel.Store.PostThread" store:Type="Tables" />
+    <AssociationSet Name="Post_Comment_Link" Association="ForumDBModel.Store.Post_Comment_Link">
+      <End Role="PostThread" EntitySet="PostThread" />
+      <End Role="Comment" EntitySet="Comment" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Comment">
+    <Key>
+      <PropertyRef Name="CommentID" />
+    </Key>
+    <Property Name="CommentID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="PostID" Type="int" />
+    <Property Name="CommentAuthor" Type="nvarchar" MaxLength="100" />
+    <Property Name="CommentContent" Type="nvarchar" MaxLength="200" />
+    <Property Name="CommentDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="PostThread">
+    <Key>
+      <PropertyRef Name="PostID" />
+    </Key>
+    <Property Name="PostID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="PostAuthor" Type="nvarchar" MaxLength="100" />
+    <Property Name="PostContent" Type="nvarchar" MaxLength="200" />
+    <Property Name="PostDate" Type="datetime" />
+  </EntityType>
+  <Association Name="Post_Comment_Link">
+    <End Role="PostThread" Type="ForumDBModel.Store.PostThread" Multiplicity="0..1" />
+    <End Role="Comment" Type="ForumDBModel.Store.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PostThread">
+        <PropertyRef Name="PostID" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="PostID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

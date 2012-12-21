@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ForumDBModel.Store" Alias="Self" Provider="System.Data.SqlServerCe.4.0" ProviderManifestToken="4.0" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="ForumDBModelStoreContainer">
+          <EntitySet Name="Comment" EntityType="ForumDBModel.Store.Comment" store:Type="Tables" />
+          <EntitySet Name="PostThread" EntityType="ForumDBModel.Store.PostThread" store:Type="Tables" />
+          <AssociationSet Name="Post_Comment_Link" Association="ForumDBModel.Store.Post_Comment_Link">
+            <End Role="PostThread" EntitySet="PostThread" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Name="CommentID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PostID" Type="int" />
+          <Property Name="CommentAuthor" Type="nvarchar" MaxLength="100" />
+          <Property Name="CommentContent" Type="nvarchar" MaxLength="200" />
+          <Property Name="CommentDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PostThread">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="PostID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PostAuthor" Type="nvarchar" MaxLength="100" />
+          <Property Name="PostContent" Type="nvarchar" MaxLength="200" />
+          <Property Name="PostDate" Type="datetime" />
+        </EntityType>
+        <Association Name="Post_Comment_Link">
+          <End Role="PostThread" Type="ForumDBModel.Store.PostThread" Multiplicity="0..1" />
+          <End Role="Comment" Type="ForumDBModel.Store.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PostThread">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ForumDBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="ForumDBContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Comments" EntityType="ForumDBModel.Comment" />
+          <EntitySet Name="PostThreads" EntityType="ForumDBModel.PostThread" />
+          <AssociationSet Name="Post_Comment_Link" Association="ForumDBModel.Post_Comment_Link">
+            <End Role="PostThread" EntitySet="PostThreads" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="CommentID" />
+          </Key>
+          <Property Name="CommentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PostID" Type="Int32" />
+          <Property Name="CommentAuthor" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="CommentContent" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="CommentDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="PostThread" Relationship="ForumDBModel.Post_Comment_Link" FromRole="Comment" ToRole="PostThread" />
+        </EntityType>
+        <EntityType Name="PostThread">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="PostID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PostAuthor" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="PostContent" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="PostDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Comments" Relationship="ForumDBModel.Post_Comment_Link" FromRole="PostThread" ToRole="Comment" />
+        </EntityType>
+        <Association Name="Post_Comment_Link">
+          <End Role="PostThread" Type="ForumDBModel.PostThread" Multiplicity="0..1" />
+          <End Role="Comment" Type="ForumDBModel.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PostThread">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ForumDBModelStoreContainer" CdmEntityContainer="ForumDBContext">
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="ForumDBModel.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="CommentID" ColumnName="CommentID" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="CommentAuthor" ColumnName="CommentAuthor" />
+                <ScalarProperty Name="CommentContent" ColumnName="CommentContent" />
+                <ScalarProperty Name="CommentDate" ColumnName="CommentDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PostThreads">
+            <EntityTypeMapping TypeName="ForumDBModel.PostThread">
+              <MappingFragment StoreEntitySet="PostThread">
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="PostAuthor" ColumnName="PostAuthor" />
+                <ScalarProperty Name="PostContent" ColumnName="PostContent" />
+                <ScalarProperty Name="PostDate" ColumnName="PostDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

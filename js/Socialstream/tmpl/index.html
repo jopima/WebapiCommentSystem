@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Sample forum</title>
+    <link rel="stylesheet" type="text/css" href="content/css/all.css" />
+    
+</head>
+
+<body>
+
+	<div class="container">
+        <div class="shadow left"></div>
+        <div class="main">
+            <h1>Forum</h1>
+            <input id="new-Post" placeholder="What is on your mind?" autofocus>
+            <div id="content"></div>
+        </div>            
+        <div class="shadow right"></div>
+    </div> 
+
+<!-- Templates -->
+
+<script type="text/template" id="tpl_thread_list">
+    <ul class="thread_list"></ul>
+    <div class="post_list"></div>
+   
+    <div class="error_message"></div>
+    <br />
+    <p class="show_more" id="btnShowNext">Show more Posts</p>
+    <p class="show_more" id="btnShowPrevious">Show more Posts</p>
+</script>
+
+<script type="text/template" id="tpl_thread_summary">
+    <span class="thread_title">{{PostContent}}</span> 
+    <span class="thread_nb_messages">{{comments.length}} comment (s)</span>
+</script>
+
+<script type="text/template" id="tpl_thread">
+    <div class="postThread">
+    <ul>
+    <li><h2>Post by :  {{PostAuthor}} </h2></li>
+    <li><h2>{{PostContent}}</h2></li>
+    </ul>
+    
+    </div>
+    
+
+    <div class="message_list"></div>
+
+    <h2>Add Comment</div>
+    <ul>
+        <li>Author: <input class="new_message_author" type="text" /></li>
+        <li>Text: <textarea class="new_message_text" /></li>
+    </ul>
+    <input type="submit" id="btnAddComment" value="Post message" />
+    </ul>
+    <div class="error_message"></div>
+</script>
+
+<script type="text/template" id="tpl_message">
+    <div class="message">
+        <div class="message_author">Comment by: {{CommentAuthor}}</div>
+        <div class="message_text">{{CommentContent}}</div>
+    </div>
+</script>
+
+<!-- JavaScript -->
+    <script type="text/javascript" src="lib/jquery-1.7.js"></script>
+    <script type="text/javascript" src="lib/underscore-min.js"></script>
+    <script type="text/javascript" src="lib/handlebars-1.0.0.beta.6.js"></script>
+    <script type="text/javascript" src="lib/backbone-min-0.92.js"></script>
+    <script type="text/javascript" src="lib/backbone-relational-0.5.0.js"></script>
+    <script type="text/javascript" src="lib/Backbone.actAs.Paginatable.js"></script>
+    <script type="text/javascript" src="js/ForumEngine.js"></script>
+
+<script type="text/javascript">
+
+
+    $(function () {
+        var app = new ForumEngine.bootstrap();
+        app.Start();
+    });
+
+   
+</script>
+
+</body>
+</html>
